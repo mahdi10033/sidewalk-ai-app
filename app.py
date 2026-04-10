@@ -82,7 +82,10 @@ if uploaded_file is not None:
 
         if total_risk > 0:
             reduction_pct = (covered_risk / total_risk) * 100
-            st.info(f"Estimated risk addressed: {reduction_pct:.1f}%")
+            st.info(
+            f"Estimated risk reduction: {reduction_pct:.1f}% "
+            f"({covered_risk:.0f} out of {total_risk:.0f} total risk score)"
+            )
 
         if not selected_projects.empty:
             st.dataframe(selected_projects[existing_display_cols], use_container_width=True)
