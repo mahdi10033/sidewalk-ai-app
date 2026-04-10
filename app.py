@@ -74,6 +74,15 @@ if uploaded_file is not None:
         selected_projects = sorted_df[sorted_df["cumulative_cost"] <= budget]
 
         st.write(f"Projects covered within budget: {len(selected_projects)}")
+        total_cost = selected_projects["estimated_repair_cost"].sum()
+        st.success(f"Total cost used: ${total_cost:,.0f} out of ${budget:,.0f}")
+
+        total_risk = filtered_df["risk_score"].sum()
+        covered_risk = selected_projects["risk_score"].sum()
+
+        if total_risk > 0:
+            reduction_pct = (covered_risk / total_risk) * 100
+            st.info(f"Estimated risk addressed: {reduction_pct:.1f}%")
 
         if not selected_projects.empty:
             st.dataframe(selected_projects[existing_display_cols], use_container_width=True)
