@@ -101,6 +101,12 @@ if uploaded_file is not None:
             st.dataframe(high_risk[existing_display_cols], use_container_width=True)
         else:
             st.info("No critical segments found in the current filter.")
+        st.subheader("Map View")
+
+        if "latitude" in filtered_df.columns and "longitude" in filtered_df.columns:
+            st.map(filtered_df[["latitude", "longitude"]])
+        else:
+            st.warning("Latitude/Longitude not found in data.")
 
         st.subheader("Priority Distribution")
         priority_counts = filtered_df["priority_label"].value_counts()
