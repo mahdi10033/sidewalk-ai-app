@@ -1,0 +1,4 @@
+segment_id,estimated_width_in,obstruction_present,vegetation_encroachment,surface_crack_severity,vertical_displacement_est_in,trip_hazard_present,curb_ramp_present,detectable_warning_present,cross_slope_est_pct,pedestrian_volume_class,near_school,near_hospital,crash_history_flag,complaint_history_flag,equity_priority_area,estimated_repair_cost
+SEG_001,30,True,True,severe,0.8,True,False,False,3.1,high,True,False,False,True,True,4000
+SEG_002,42,False,False,minor,0.2,False,True,True,1.5,medium,False,True,False,False,False,1500
+SEG_003,34,True,False,moderate,0.6,True,False,False,2.5,high,False,False,True,True,True,12000
