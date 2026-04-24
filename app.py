@@ -52,16 +52,34 @@ else:
         st.subheader("Prediction Results")
 
         try:
-            predictions = prediction["predictions"]
+            prediction = model.predict(temp_path).json()
 
-            if isinstance(predictions, list):
-                top_prediction = predictions[0]
-                predicted_class = top_prediction.get("class") or top_prediction.get("label")
-                confidence = top_prediction.get("confidence")
+# Handle Roboflow classification response
 
-            elif isinstance(predictions, dict):
-                predicted_class = max(predictions, key=predictions.get)
-                confidence = predictions[predicted_class]
+if "top" in prediction:
+    predicted_class = prediction["top"]
+    confidence = prediction["confidence"]
+
+elif "predictions" in prediction:
+
+    predictions = prediction["predictions"]
+
+    if isinstance(predictions, dict):
+        predicted_class = max(predictions, key=predictions.get)
+        confidence = predictions[predicted_class]
+
+    elif isinstance(predictions, list) and len(predictions) > 0:
+        top_prediction = predictions[0]
+        predicted_class = top_prediction.get("class", "Unknown")
+        confidence = top_prediction.get("confidence", 0)
+
+    else:
+        predicted_class = "Unknown"
+        confidence = 0
+
+else:
+    predicted_class = "Unknown"
+    confidence = 0
 
             else:
                 st.json(prediction)
