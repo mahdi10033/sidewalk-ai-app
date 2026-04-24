@@ -45,6 +45,7 @@ else:
                 temp_path = temp_file.name
 
             prediction = model.predict(temp_path).json()
+            st.json(prediction)
 
             st.subheader("Prediction Results")
 
