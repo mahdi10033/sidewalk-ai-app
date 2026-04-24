@@ -52,57 +52,48 @@ else:
         st.subheader("Prediction Results")
 
         try:
-            prediction = model.predict(temp_path).json()
+                    prediction = model.predict(temp_path).json()
 
-# Handle Roboflow classification response
+        st.subheader("Prediction Results")
 
-if "top" in prediction:
-    predicted_class = prediction["top"]
-    confidence = prediction["confidence"]
+        try:
+            if "top" in prediction:
+                predicted_class = prediction["top"]
+                confidence = prediction.get("confidence", 0)
 
-elif "predictions" in prediction:
+            elif "predictions" in prediction:
+                predictions = prediction["predictions"]
 
-    predictions = prediction["predictions"]
+                if isinstance(predictions, dict):
+                    predicted_class = max(predictions, key=predictions.get)
+                    confidence = predictions[predicted_class]
 
-    if isinstance(predictions, dict):
-        predicted_class = max(predictions, key=predictions.get)
-        confidence = predictions[predicted_class]
+                elif isinstance(predictions, list) and len(predictions) > 0:
+                    top_prediction = predictions[0]
+                    predicted_class = top_prediction.get("class", "Unknown")
+                    confidence = top_prediction.get("confidence", 0)
 
-    elif isinstance(predictions, list) and len(predictions) > 0:
-        top_prediction = predictions[0]
-        predicted_class = top_prediction.get("class", "Unknown")
-        confidence = top_prediction.get("confidence", 0)
-
-    else:
-        predicted_class = "Unknown"
-        confidence = 0
-
-else:
-    predicted_class = "Unknown"
-    confidence = 0
+                else:
+                    predicted_class = "Unknown"
+                    confidence = 0
 
             else:
-                st.json(prediction)
-                st.stop()
+                predicted_class = "Unknown"
+                confidence = 0
 
             st.metric("Predicted Class", predicted_class)
             st.metric("Confidence", f"{confidence * 100:.1f}%")
 
             if predicted_class == "surface_problem":
                 st.warning("Potential sidewalk surface issue detected.")
-
             elif predicted_class == "obstacle":
                 st.warning("Potential sidewalk obstruction detected.")
-
             elif predicted_class == "no_sidewalk":
                 st.error("No sidewalk detected.")
-
             elif predicted_class == "curb_ramp":
                 st.info("Curb ramp detected.")
-
             elif predicted_class == "no_issue":
                 st.success("No major sidewalk issue detected.")
-
             else:
                 st.info("Prediction completed.")
 
