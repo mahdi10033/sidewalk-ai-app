@@ -58,8 +58,8 @@ else:
             st.metric("Predicted Class", predicted_class)
             st.metric("Confidence", f"{confidence * 100:.1f}%")
 
-except Exception as e:
-    st.error(f"Prediction error: {e}")
+    except Exception as e:
+        st.error(f"Prediction error: {e}")
 
 st.markdown("---")
 
