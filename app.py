@@ -18,11 +18,12 @@ st.header("AI Sidewalk Image Classification")
 
 st.write("Upload a sidewalk image to classify sidewalk conditions using AI.")
 
-rf_api_key = st.secrets.get("bzQa6X26PfFdICZmemms", "")
+rf_api_key = st.secrets.get("ROBOFLOW_API_KEY")
 
-if rf_api_key:
-
-    rf = Roboflow(api_key=rf_api_key)
+if rf_api_key is None:
+    st.warning("Roboflow API key not configured.")
+else:
+    rf = Roboflow(bzQa6X26PfFdICZmemms)
 
     workspace_id = "sidewalk-qzu8g"
     project_id = "classification-of-sidewalk"
