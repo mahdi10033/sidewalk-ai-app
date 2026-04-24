@@ -44,48 +44,22 @@ else:
                 temp_file.write(uploaded_image.read())
                 temp_path = temp_file.name
 
-            prediction = model.predict(temp_path).json()
-            st.json(prediction)
+            prediction = model.predict(temp_path, confidence=0).json()
 
             st.subheader("Prediction Results")
 
-            predicted_class = "Unknown"
-            confidence = 0
+            result = prediction["predictions"][0]
 
-            if "top" in prediction:
-                predicted_class = prediction.get("top", "Unknown")
-                confidence = prediction.get("confidence", 0)
-
-            elif "predictions" in prediction:
-                predictions = prediction["predictions"]
-
-                if isinstance(predictions, dict):
-                    predicted_class = max(predictions, key=predictions.get)
-                    confidence = predictions[predicted_class]
-
-                elif isinstance(predictions, list) and len(predictions) > 0:
-                    top_prediction = predictions[0]
-                    predicted_class = top_prediction.get("class", "Unknown")
-                    confidence = top_prediction.get("confidence", 0)
-
+            predicted_class = result.get("top", "Unknown")
+            confidence = result.get("confidence", 0)
+            
+            if predicted_class == "":
+                predicted_class = "Unknown"
             st.metric("Predicted Class", predicted_class)
             st.metric("Confidence", f"{confidence * 100:.1f}%")
 
-            if predicted_class == "surface_problem":
-                st.warning("Potential sidewalk surface issue detected.")
-            elif predicted_class == "obstacle":
-                st.warning("Potential sidewalk obstruction detected.")
-            elif predicted_class == "no_sidewalk":
-                st.error("No sidewalk detected.")
-            elif predicted_class == "curb_ramp":
-                st.info("Curb ramp detected.")
-            elif predicted_class == "no_issue":
-                st.success("No major sidewalk issue detected.")
-            else:
-                st.info("Prediction completed.")
-
-    except Exception as e:
-        st.error(f"Prediction error: {e}")
+except Exception as e:
+    st.error(f"Prediction error: {e}")
 
 st.markdown("---")
 
