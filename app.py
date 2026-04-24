@@ -16,7 +16,7 @@ st.markdown("---")
 st.header("AI Sidewalk Image Classification")
 st.write("Upload a sidewalk image to classify sidewalk conditions using AI.")
 
-rf_api_key = st.secrets.get("bzQa6X26PfFdICZmemms")
+rf_api_key = st.secrets.get("ROBOFLOW_API_KEY")
 
 if not rf_api_key:
     st.warning("Roboflow API key not configured.")
