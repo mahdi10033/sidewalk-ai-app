@@ -47,9 +47,10 @@ else:
         st.subheader("Prediction Results")
 
         try:
-            top_prediction = prediction["predictions"][0]
-            predicted_class = top_prediction["class"]
-            confidence = top_prediction["confidence"]
+            predictions = prediction["predictions"]
+
+            predicted_class = max(predictions, key=predictions.get)
+            confidence = predictions[predicted_class]
 
             st.metric("Predicted Class", predicted_class)
             st.metric("Confidence", f"{confidence * 100:.1f}%")
