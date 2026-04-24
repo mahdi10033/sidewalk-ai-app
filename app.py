@@ -44,7 +44,7 @@ else:
                 temp_file.write(uploaded_image.read())
                 temp_path = temp_file.name
 
-            prediction = model.predict(temp_path, confidence=0).json()
+            prediction = model.predict(temp_path).json()
 
             st.subheader("Prediction Results")
 
@@ -55,8 +55,11 @@ else:
             
             if predicted_class == "":
                 predicted_class = "Unknown"
+            
             st.metric("Predicted Class", predicted_class)
             st.metric("Confidence", f"{confidence * 100:.1f}%")
+
+            st.json(prediction)
 
     except Exception as e:
         st.error(f"Prediction error: {e}")
