@@ -59,6 +59,9 @@ else:
             st.metric("Predicted Class", predicted_class)
             st.metric("Confidence", f"{confidence * 100:.1f}%")
 
+            if confidence < 0.70:
+                st.warning("Low-confidence prediction. Please verify manually.")
+
             if predicted_class == "issue_present":
                 st.warning("Potential sidewalk issue detected. Field review recommended.")
 
