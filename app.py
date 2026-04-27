@@ -26,7 +26,7 @@ else:
 
         workspace_id = "sidewalk-qzu8g"
         project_id = "classification-of-sidewalk"
-        version_number = 1
+        version_number = 2
 
         project = rf.workspace(workspace_id).project(project_id)
         model = project.version(version_number).model
@@ -52,12 +52,24 @@ else:
 
             predicted_class = result.get("top", "Unknown")
             confidence = result.get("confidence", 0)
-            
+
             if predicted_class == "":
                 predicted_class = "Unknown"
-            
+
             st.metric("Predicted Class", predicted_class)
             st.metric("Confidence", f"{confidence * 100:.1f}%")
+
+            if predicted_class == "issue_present":
+                st.warning("Potential sidewalk issue detected. Field review recommended.")
+
+            elif predicted_class == "no_sidewalk":
+                st.error("No sidewalk detected. Sidewalk gap identified.")
+
+            elif predicted_class == "no_issue":
+                st.success("No major sidewalk issue detected.")
+
+            else:
+                st.info("Prediction completed.")
 
             st.json(prediction)
 
