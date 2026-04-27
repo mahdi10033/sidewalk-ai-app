@@ -26,7 +26,7 @@ else:
 
         workspace_id = "sidewalk-qzu8g"
         project_id = "classification-of-sidewalk"
-        version_number = 2
+        version_number = 3
 
         project = rf.workspace(workspace_id).project(project_id)
         model = project.version(version_number).model
